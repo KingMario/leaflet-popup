@@ -5,10 +5,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
+    "prestart": "npm run ngc",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ngc": "ngc -p tsconfig-aot.json",
+    "rollup": "rollup -c rollup-config.js",
+    "build:aot": "rm -rf dist aot && npm run ngc && npm run rollup && node copy-static-files-for-aot.js"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +34,7 @@
     "@angular/cli": "1.4.5",
     "@angular/compiler-cli": "^4.2.4",
     "@angular/language-service": "^4.2.4",
+    "@angular/platform-server": "^4.2.4",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
@@ -43,6 +48,10 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.3.3"

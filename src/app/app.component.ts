@@ -1,6 +1,5 @@
 import { Compiler, Component, ViewContainerRef, ViewChild, OnInit } from '@angular/core';
-import { PopupContentModule } from './components/popup-content/popup-content.module';
-import { PopupContentComponent } from './components/popup-content/popup-content.component';
+import { PopupContentComponentNgFactory } from './components/popup-content/popup-content.component.ngfactory';
 import * as L from 'leaflet';
 
 @Component({
@@ -46,10 +45,6 @@ export class AppComponent implements OnInit {
     },
   ];
   itemLength = this.items.length;
-  popupContentComponentFactory = this.compiler.compileModuleAndAllComponentsSync(PopupContentModule)
-    .componentFactories.find((comp) =>
-      comp.componentType === PopupContentComponent,
-    );
   component: any;
   props = {
     data: {
@@ -76,7 +71,7 @@ export class AppComponent implements OnInit {
 
     this.popup = L.popup().setLatLng([ 51.505, -0.09 ]); // use the same LatLng of the marker
 
-    this.component = this.popupContent.createComponent(this.popupContentComponentFactory);
+    this.component = this.popupContent.createComponent(PopupContentComponentNgFactory);
     Object.assign(this.component.instance, this.props);
     this.popup.setContent(this.component.instance.ele.nativeElement);
   }
