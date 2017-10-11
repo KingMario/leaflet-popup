@@ -3,7 +3,10 @@ import { PopupContentComponent } from './popup-content.component';
 
 @NgModule({
   declarations: [
-    PopupContentComponent
-  ]
+    PopupContentComponent,
+  ],
+  exports: [
+    PopupContentComponent,
+  ],
 })
 export class PopupContentModule { }

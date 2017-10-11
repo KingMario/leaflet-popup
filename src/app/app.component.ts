@@ -1,6 +1,4 @@
-import { Compiler, Component, ViewContainerRef, ViewChild, OnInit } from '@angular/core';
-import { PopupContentModule } from './components/popup-content/popup-content.module';
-import { PopupContentComponent } from './components/popup-content/popup-content.component';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 
 @Component({
@@ -10,11 +8,9 @@ import * as L from 'leaflet';
 })
 export class AppComponent implements OnInit {
 
-  constructor (private compiler: Compiler) {}
+  constructor () {}
 
-  @ViewChild('popupContent', {
-    read: ViewContainerRef,
-  }) popupContent: ViewContainerRef;
+  @ViewChild('popupContent') popupContent;
   map: any;
   maker: any;
   popup: any;
@@ -46,16 +42,7 @@ export class AppComponent implements OnInit {
     },
   ];
   itemLength = this.items.length;
-  popupContentComponentFactory = this.compiler.compileModuleAndAllComponentsSync(PopupContentModule)
-    .componentFactories.find((comp) =>
-      comp.componentType === PopupContentComponent,
-    );
-  component: any;
-  props = {
-    data: {
-      item: this.items[ 0 ],
-    },
-  };
+  item = this.items[ 0 ];
 
   ngOnInit () {
     this.map = L.map('map', {
@@ -76,14 +63,11 @@ export class AppComponent implements OnInit {
 
     this.popup = L.popup().setLatLng([ 51.505, -0.09 ]); // use the same LatLng of the marker
 
-    this.component = this.popupContent.createComponent(this.popupContentComponentFactory);
-    Object.assign(this.component.instance, this.props);
-    this.popup.setContent(this.component.instance.ele.nativeElement);
+    this.popup.setContent(this.popupContent.nativeElement);
   }
 
   showItemPopup () {
-    this.props.data.item = this.items[ Math.floor(Math.random() * this.itemLength) ];
-    this.component.changeDetectorRef.detectChanges();
+    this.item = this.items[ Math.floor(Math.random() * this.itemLength) ];
     this.popup.openOn(this.map);
   }
 }
